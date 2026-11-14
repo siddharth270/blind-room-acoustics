@@ -1,0 +1,15 @@
+[project]
+name = "roomest"
+version = "0.1.0"
+description = "Blind room-acoustics estimation (T60 per octave band, DRR, C50, volume) from reverberant audio, with real-time int8 deployment."
+requires-python = ">=3.10,<3.13"
+dynamic = ["dependencies"]
+
+[tool.setuptools.dynamic]
+dependencies = { file = ["requirements.txt"] }
+
+[tool.setuptools]
+packages = ["roomest"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,14 @@
+numpy>=1.26
+scipy>=1.11
+torch>=2.2
+pyroomacoustics>=0.7
+soundfile>=0.12
+pyyaml>=6.0
+tqdm>=4.66
+matplotlib>=3.8
+onnx>=1.16
+onnxruntime>=1.18
+onnxscript>=0.1
+sounddevice>=0.4
+rich>=13.0
+pytest>=8.0

@@ -1,0 +1,14 @@
+.venv/
+__pycache__/
+*.pyc
+data/
+runs*/
+exported_smoke/
+exported/*/model_pre.onnx
+reports_smoke/
+logs/
+*.edc.png
+.DS_Store
+embedded/*.o
+embedded/*.dylib
+embedded/*.so

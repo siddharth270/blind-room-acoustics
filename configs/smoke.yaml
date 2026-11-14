@@ -1,0 +1,21 @@
+# Tiny end-to-end config: exercises every stage in a couple of minutes.
+extends: default.yaml
+paths:
+  sim_dir: data/sim_smoke
+  runs_dir: runs_smoke
+  reports_dir: reports_smoke
+  export_dir: exported_smoke
+sim:
+  n_rooms: 40
+  n_rays: 1000
+data:
+  train_samples_per_epoch: 128
+  val_samples: 32
+  test_samples: 64
+train:
+  epochs: 2
+  batch_size: 16
+  num_workers: 2
+export:
+  n_calib: 32
+  n_eval: 64
