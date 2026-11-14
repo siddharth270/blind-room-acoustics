@@ -140,8 +140,11 @@ def _load(path, fs):
     return x
 
 
-def file_blocks(path, fs, block, rir=None, realtime=True):
+def file_blocks(path, fs, block, rir=None, realtime=True, min_len=0):
     x = _load(path, fs)
+    if len(x) < min_len:  # shorter than the analysis window: loop it
+        print(f"note: {Path(path).name} is {len(x) / fs:.1f} s; looping it to {min_len / fs:.0f} s")
+        x = np.tile(x, int(np.ceil(min_len / len(x))))[:min_len]
     if rir is not None:
         x = signal.fftconvolve(x, rir)[: len(x)]
     x = x / (np.max(np.abs(x)) + 1e-9) * 0.5
@@ -178,7 +181,8 @@ def main():
     if args.rir:
         rir = _load(args.rir, fs)
         truth = compute_labels(rir, fs, noise_comp=True)
-    blocks = (file_blocks(args.wav, fs, block, rir, realtime=not args.fast) if args.wav
+    blocks = (file_blocks(args.wav, fs, block, rir, realtime=not args.fast, min_len=est.n + 4 * est.hop)
+              if args.wav
               else mic_blocks(fs, block, args.device))
     src = Path(args.wav).name if args.wav else "microphone"
     if args.rir:
@@ -220,6 +224,9 @@ def main():
         print("final estimate:", {n: round(float(v), 3) for n, v in zip(est.names, y)})
         if truth is not None:
             print("ground truth:  ", {n: round(float(v), 3) for n, v in zip(est.names[:8], truth[:8])})
+    else:
+        print("no estimate produced: the input never had enough active sound "
+              f"({est.n / fs:.0f} s window, gate {est.cfg['min_rms_dbfs']} dBFS)")
 
 
 if __name__ == "__main__":
